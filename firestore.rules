@@ -1,0 +1,97 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isValidTimestamp(ts) {
+      return ts is timestamp && ts <= request.time;
+    }
+
+    function isValidUserProfile(data) {
+      return data.userId is string &&
+             data.userId == request.auth.uid &&
+             data.nativeLanguageCode is string &&
+             data.nativeLanguageCode.size() >= 2 &&
+             data.nativeLanguageCode.size() <= 10 &&
+             data.nativeLanguageName is string &&
+             data.nativeLanguageName.size() > 0 &&
+             data.nativeLanguageName.size() <= 100 &&
+             isValidTimestamp(data.createdAt);
+    }
+
+    function isValidVocabularyWord(data) {
+      return data.userId is string &&
+             data.userId == request.auth.uid &&
+             data.word is string &&
+             data.word.size() > 0 &&
+             data.word.size() <= 200 &&
+             data.translation is string &&
+             data.translation.size() > 0 &&
+             data.translation.size() <= 500 &&
+             data.visualEmoji is string &&
+             data.visualEmoji.size() <= 20 &&
+             data.visualExplanation is string &&
+             data.visualExplanation.size() <= 1000 &&
+             isValidTimestamp(data.createdAt);
+    }
+
+    function isValidScannedDocument(data) {
+      return data.userId is string &&
+             data.userId == request.auth.uid &&
+             data.title is string &&
+             data.title.size() > 0 &&
+             data.title.size() <= 200 &&
+             data.rawText is string &&
+             data.rawText.size() > 0 &&
+             data.rawText.size() <= 50000 &&
+             data.detectedLanguageCode is string &&
+             data.detectedLanguageName is string &&
+             isValidTimestamp(data.createdAt);
+    }
+
+    function isValidQuizHistory(data) {
+      return data.userId is string &&
+             data.userId == request.auth.uid &&
+             data.mode is string &&
+             data.pointsEarned is int &&
+             data.starsEarned is int &&
+             isValidTimestamp(data.createdAt);
+    }
+
+    match /users/{userId} {
+      allow read: if isOwner(userId);
+      allow create: if isOwner(userId) && isValidUserProfile(request.resource.data);
+      allow update: if isOwner(userId) && isValidUserProfile(request.resource.data);
+      allow delete: if false;
+
+      match /words/{wordId} {
+        allow read: if isOwner(userId);
+        allow create: if isOwner(userId) && isValidVocabularyWord(request.resource.data);
+        allow update: if isOwner(userId) && isValidVocabularyWord(request.resource.data);
+        allow delete: if isOwner(userId);
+      }
+
+      match /documents/{docId} {
+        allow read: if isOwner(userId);
+        allow create: if isOwner(userId) && isValidScannedDocument(request.resource.data);
+        allow update: if isOwner(userId) && isValidScannedDocument(request.resource.data);
+        allow delete: if isOwner(userId);
+      }
+
+      match /quizHistory/{historyId} {
+        allow read: if isOwner(userId);
+        allow create: if isOwner(userId) && isValidQuizHistory(request.resource.data);
+        allow update: if false;
+        allow delete: if isOwner(userId);
+      }
+    }
+  }
+}

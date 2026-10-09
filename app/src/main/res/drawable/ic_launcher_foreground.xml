@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Document Page / Book Body (Safe zone 24..84) -->
+    <path
+        android:fillColor="#F8FAFC"
+        android:pathData="M32,26 L66,26 L76,36 L76,82 C76,84.2 74.2,86 72,86 L32,86 C29.8,86 28,84.2 28,82 L28,30 C28,27.8 29.8,26 32,26 Z" />
+
+    <!-- Folded Corner -->
+    <path
+        android:fillColor="#CBD5E1"
+        android:pathData="M66,26 L66,36 L76,36 Z" />
+
+    <!-- Text Lines on Page -->
+    <path
+        android:fillColor="#94A3B8"
+        android:pathData="M34,36 L58,36 A1.5,1.5 0 0,1 58,39 L34,39 A1.5,1.5 0 0,1 34,36 Z" />
+    <path
+        android:fillColor="#94A3B8"
+        android:pathData="M34,44 L70,44 A1.5,1.5 0 0,1 70,47 L34,47 A1.5,1.5 0 0,1 34,44 Z" />
+    <path
+        android:fillColor="#818CF8"
+        android:pathData="M34,52 L62,52 A1.5,1.5 0 0,1 62,55 L34,55 A1.5,1.5 0 0,1 34,52 Z" />
+    <path
+        android:fillColor="#94A3B8"
+        android:pathData="M34,60 L68,60 A1.5,1.5 0 0,1 68,63 L34,63 A1.5,1.5 0 0,1 34,60 Z" />
+    <path
+        android:fillColor="#94A3B8"
+        android:pathData="M34,68 L52,68 A1.5,1.5 0 0,1 52,71 L34,71 A1.5,1.5 0 0,1 34,68 Z" />
+
+    <!-- Scanner Target Brackets (Cyan / Electric Blue) -->
+    <path
+        android:strokeColor="#38BDF8"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M25,35 L25,27 L33,27 M75,27 L83,27 L83,35 M25,73 L25,81 L33,81 M75,81 L83,81 L83,73" />
+
+    <!-- Scanner Horizontal Laser Line -->
+    <path
+        android:strokeColor="#F43F5E"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M23,53 L85,53" />
+
+    <!-- Vocabulary Lens / Badge Floating on Bottom-Right -->
+    <path
+        android:fillColor="#4F46E5"
+        android:pathData="M66,66 A13,13 0 1,1 65.9,66 Z" />
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2"
+        android:fillColor="#00000000"
+        android:pathData="M66,66 A13,13 0 1,1 65.9,66 Z" />
+
+    <!-- Letter 'A' badge inside Lens -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M66,59 L62.5,69.5 L64.8,69.5 L65.5,67.3 L68.2,67.3 L68.9,69.5 L71.2,69.5 Z M66.8,63.2 L67.7,65.8 L66,65.8 Z" />
+
+    <!-- Sparkle / Star top right -->
+    <path
+        android:fillColor="#FBBF24"
+        android:pathData="M78,21 L79.5,25.5 L84,27 L79.5,28.5 L78,33 L76.5,28.5 L72,27 L76.5,25.5 Z" />
+
+</vector>

@@ -1,0 +1,93 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile with language settings and preferences.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner user ID" },
+        "displayName": { "type": "string", "description": "Display name" },
+        "email": { "type": "string", "description": "Email address" },
+        "nativeLanguageCode": { "type": "string", "description": "Native language ISO code" },
+        "nativeLanguageName": { "type": "string", "description": "Native language display name" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Creation timestamp" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Last update timestamp" }
+      },
+      "required": ["userId", "nativeLanguageCode", "nativeLanguageName", "createdAt"]
+    },
+    "VocabularyWord": {
+      "title": "VocabularyWord",
+      "description": "Marked or saved vocabulary word for training.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner user ID" },
+        "word": { "type": "string", "description": "Foreign word" },
+        "lemma": { "type": "string", "description": "Base dictionary form" },
+        "sourceLanguage": { "type": "string", "description": "Source language" },
+        "targetLanguage": { "type": "string", "description": "Target / native language" },
+        "translation": { "type": "string", "description": "Translation in native language" },
+        "visualEmoji": { "type": "string", "description": "Vivid single emoji" },
+        "visualExplanation": { "type": "string", "description": "Vivid sensory mental picture" },
+        "contextSentence": { "type": "string", "description": "Sentence context" },
+        "partOfSpeech": { "type": "string", "description": "Part of speech" },
+        "isDifficultAutoSuggested": { "type": "boolean", "description": "Auto suggested flag" },
+        "masteryLevel": { "type": "integer", "description": "0=New, 1=Learning, 2=Mastered" },
+        "correctCount": { "type": "integer", "description": "Correct quiz answers" },
+        "wrongCount": { "type": "integer", "description": "Wrong quiz answers" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Creation timestamp" }
+      },
+      "required": ["userId", "word", "translation", "visualEmoji", "visualExplanation", "createdAt"]
+    },
+    "ScannedDocument": {
+      "title": "ScannedDocument",
+      "description": "Scanned text from paper OCR.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner user ID" },
+        "title": { "type": "string", "description": "Document title" },
+        "rawText": { "type": "string", "description": "Extracted OCR text" },
+        "detectedLanguageCode": { "type": "string", "description": "Detected language code" },
+        "detectedLanguageName": { "type": "string", "description": "Detected language name" },
+        "difficultWordsJson": { "type": "string", "description": "Serialized difficult words" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Creation timestamp" }
+      },
+      "required": ["userId", "title", "rawText", "detectedLanguageCode", "detectedLanguageName", "createdAt"]
+    },
+    "QuizHistory": {
+      "title": "QuizHistory",
+      "description": "Completed quiz session record with stars and score.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner user ID" },
+        "mode": { "type": "string", "description": "Quiz mode" },
+        "totalQuestions": { "type": "integer", "description": "Question count" },
+        "correctCount": { "type": "integer", "description": "Correct answers" },
+        "wrongCount": { "type": "integer", "description": "Wrong answers" },
+        "pointsEarned": { "type": "integer", "description": "Points earned" },
+        "starsEarned": { "type": "integer", "description": "Stars collected" },
+        "accuracyPercentage": { "type": "integer", "description": "Accuracy in percent" },
+        "sourceTitle": { "type": "string", "description": "Source text name" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Session timestamp" }
+      },
+      "required": ["userId", "mode", "pointsEarned", "starsEarned", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profile with language preferences."
+    },
+    "/users/{userId}/words/{wordId}": {
+      "schema": "VocabularyWord",
+      "description": "Vocabulary words saved by the user."
+    },
+    "/users/{userId}/documents/{docId}": {
+      "schema": "ScannedDocument",
+      "description": "Scanned documents of the user."
+    },
+    "/users/{userId}/quizHistory/{historyId}": {
+      "schema": "QuizHistory",
+      "description": "Historical quiz sessions with statistics."
+    }
+  }
+}
