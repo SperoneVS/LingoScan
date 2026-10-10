@@ -97,18 +97,20 @@ fun StatisticsScreen(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    // Mini avatar display
+                    // Mini avatar display with customized background
                     Surface(
                         shape = RoundedCornerShape(20.dp),
-                        color = Color(0xFFFFF9DB),
+                        color = avatarCustomization.currentBackgroundColor,
+                        shadowElevation = 2.dp,
                         modifier = Modifier
-                            .size(90.dp)
+                            .size(92.dp)
                             .clickable { onOpenAvatarCustomizer() }
                     ) {
                         Box(contentAlignment = Alignment.Center) {
                             AvatarView(
                                 customization = avatarCustomization,
-                                size = 80.dp
+                                size = 88.dp,
+                                showBackground = true
                             )
                         }
                     }
@@ -129,6 +131,11 @@ fun StatisticsScreen(
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
                             text = "Anzug: ${avatarCustomization.suitId.title}",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
+                        )
+                        Text(
+                            text = "Hintergrund: ${avatarCustomization.currentScenery.iconEmoji} ${avatarCustomization.currentScenery.title}",
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
                         )

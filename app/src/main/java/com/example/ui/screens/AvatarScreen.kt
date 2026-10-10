@@ -196,23 +196,24 @@ fun AvatarScreen(
                 .background(Color(0xFF131F24)) // Modern dark slate bottom, like Duolingo
         ) {
             // -------------------------------------------------------------
-            // UPPER HALF: LIVE AVATAR PREVIEW (Pastel yellow stage)
+            // UPPER HALF: LIVE AVATAR PREVIEW (Dynamic customizable stage)
             // -------------------------------------------------------------
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(260.dp)
-                    .background(Color(0xFFFFF9DB)),
+                    .background(customization.currentBackgroundColor),
                 contentAlignment = Alignment.Center
             ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    // Avatar View
+                    // Avatar View with background & scenery
                     AvatarView(
                         customization = customization,
-                        size = 190.dp
+                        size = 190.dp,
+                        showBackground = true
                     )
 
                     Spacer(modifier = Modifier.height(4.dp))
@@ -521,6 +522,7 @@ private fun AvatarTabContent(
                                 AvatarCategory.GLASSES -> "👓"
                                 AvatarCategory.FACIAL_HAIR -> "🧔"
                                 AvatarCategory.HEADWEAR -> "🧢"
+                                AvatarCategory.BACKGROUND -> "🖼️"
                             },
                             fontSize = 20.sp
                         )
@@ -535,13 +537,14 @@ private fun AvatarTabContent(
             }
         }
 
-        // 2. Color Swatch Row (if category supports colors: Hair, Glasses, Headwear, Skin)
+        // 2. Color Swatch Row (if category supports colors: Hair, Glasses, Headwear, Skin, Background)
         val colorList: List<Color> = when (selectedCategory) {
             AvatarCategory.SKIN_TONE -> AvatarCustomization.SKIN_COLORS
             AvatarCategory.HAIRSTYLE -> AvatarCustomization.HAIR_COLORS
             AvatarCategory.GLASSES -> AvatarCustomization.GLASSES_COLORS
             AvatarCategory.FACIAL_HAIR -> AvatarCustomization.HAIR_COLORS
             AvatarCategory.HEADWEAR -> AvatarCustomization.HEADWEAR_COLORS
+            AvatarCategory.BACKGROUND -> AvatarCustomization.BACKGROUND_COLORS
             AvatarCategory.EXPRESSION -> emptyList()
         }
 
@@ -551,6 +554,7 @@ private fun AvatarTabContent(
             AvatarCategory.GLASSES -> customization.glassesColorIndex
             AvatarCategory.FACIAL_HAIR -> customization.facialHairColorIndex
             AvatarCategory.HEADWEAR -> customization.headwearColorIndex
+            AvatarCategory.BACKGROUND -> customization.backgroundIndex
             AvatarCategory.EXPRESSION -> 0
         }
 
@@ -599,6 +603,7 @@ private fun AvatarTabContent(
             AvatarCategory.GLASSES -> 4 // None, Round, Geek, Sunglasses
             AvatarCategory.FACIAL_HAIR -> 4 // None, Mustache, Goatee, Beard
             AvatarCategory.HEADWEAR -> 5 // None, Cap, Beanie, Crown, Chef
+            AvatarCategory.BACKGROUND -> com.example.ui.model.SceneryTheme.entries.size
         }
 
         val currentSelectedOptionIndex = when (selectedCategory) {
@@ -608,6 +613,7 @@ private fun AvatarTabContent(
             AvatarCategory.GLASSES -> customization.glassesIndex
             AvatarCategory.FACIAL_HAIR -> customization.facialHairIndex
             AvatarCategory.HEADWEAR -> customization.headwearIndex
+            AvatarCategory.BACKGROUND -> customization.sceneryIndex
         }
 
         LazyVerticalGrid(
@@ -630,6 +636,7 @@ private fun AvatarTabContent(
                     AvatarCategory.GLASSES -> customization.copy(glassesIndex = index)
                     AvatarCategory.FACIAL_HAIR -> customization.copy(facialHairIndex = index)
                     AvatarCategory.HEADWEAR -> customization.copy(headwearIndex = index)
+                    AvatarCategory.BACKGROUND -> customization.copy(sceneryIndex = index)
                 }
 
                 Card(
@@ -651,10 +658,31 @@ private fun AvatarTabContent(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
-                        AvatarView(
-                            customization = previewCustomization,
-                            size = 80.dp
-                        )
+                        if (selectedCategory == AvatarCategory.BACKGROUND) {
+                            val scenery = com.example.ui.model.SceneryTheme.entries.getOrNull(index) ?: com.example.ui.model.SceneryTheme.MINIMAL
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(8.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
+                            ) {
+                                Text(scenery.iconEmoji, fontSize = 28.sp)
+                                Spacer(modifier = Modifier.height(6.dp))
+                                Text(
+                                    text = scenery.title,
+                                    fontSize = 11.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = if (isSelected) Color(0xFF26C6DA) else Color.White,
+                                    textAlign = TextAlign.Center
+                                )
+                            }
+                        } else {
+                            AvatarView(
+                                customization = previewCustomization,
+                                size = 80.dp
+                            )
+                        }
 
                         if (isSelected) {
                             Box(

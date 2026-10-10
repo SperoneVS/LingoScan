@@ -766,6 +766,7 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
             AvatarCategory.GLASSES -> current.copy(glassesIndex = index)
             AvatarCategory.FACIAL_HAIR -> current.copy(facialHairIndex = index)
             AvatarCategory.HEADWEAR -> current.copy(headwearIndex = index)
+            AvatarCategory.BACKGROUND -> current.copy(sceneryIndex = index)
         }
         updateAvatar(updated)
     }
@@ -779,6 +780,7 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
             AvatarCategory.GLASSES -> current.copy(glassesColorIndex = colorIndex)
             AvatarCategory.FACIAL_HAIR -> current.copy(facialHairColorIndex = colorIndex)
             AvatarCategory.HEADWEAR -> current.copy(headwearColorIndex = colorIndex)
+            AvatarCategory.BACKGROUND -> current.copy(backgroundIndex = colorIndex)
         }
         updateAvatar(updated)
     }

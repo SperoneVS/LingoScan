@@ -51,6 +51,12 @@ class ExampleUnitTest {
     val defaultAvatar = com.example.ui.model.AvatarCustomization()
     assertEquals("LernPionier", defaultAvatar.username)
     assertTrue(defaultAvatar.unlockedSuits.contains("keys"))
+    assertEquals(0, defaultAvatar.backgroundIndex)
+    assertEquals(0, defaultAvatar.sceneryIndex)
+
+    assertTrue(com.example.ui.model.AvatarCustomization.BACKGROUND_COLORS.size >= 20)
+    assertTrue(com.example.ui.model.SceneryTheme.entries.size >= 5)
+    assertTrue(com.example.ui.model.AvatarCategory.entries.contains(com.example.ui.model.AvatarCategory.BACKGROUND))
   }
 }
 

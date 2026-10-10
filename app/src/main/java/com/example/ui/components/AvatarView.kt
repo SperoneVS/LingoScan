@@ -24,7 +24,8 @@ import com.example.ui.model.SuitId
 fun AvatarView(
     customization: AvatarCustomization,
     modifier: Modifier = Modifier,
-    size: Dp = 160.dp
+    size: Dp = 160.dp,
+    showBackground: Boolean = false
 ) {
     Box(
         modifier = modifier.size(size),
@@ -42,6 +43,11 @@ fun AvatarView(
             fun y(valY: Float): Float = valY * scaleY
             fun w(valW: Float): Float = valW * scaleX
             fun h(valH: Float): Float = valH * scaleY
+
+            // 0. Optional Background & Scenery
+            if (showBackground) {
+                drawBackgroundScenery(customization, ::x, ::y, ::w, ::h)
+            }
 
             // 1. Draw Suit Body / Legs / Base
             drawSuitBody(customization.suitId, ::x, ::y, ::w, ::h)
@@ -923,3 +929,98 @@ private fun DrawScope.drawHeadwear(
         }
     }
 }
+
+// -------------------------------------------------------------
+// BACKGROUND SCENERY RENDERING
+// -------------------------------------------------------------
+private fun DrawScope.drawBackgroundScenery(
+    customization: AvatarCustomization,
+    x: (Float) -> Float,
+    y: (Float) -> Float,
+    w: (Float) -> Float,
+    h: (Float) -> Float
+) {
+    val bgColor = customization.currentBackgroundColor
+    drawRoundRect(
+        color = bgColor,
+        topLeft = Offset(0f, 0f),
+        size = Size(this.size.width, this.size.height),
+        cornerRadius = CornerRadius(w(24f), h(24f))
+    )
+
+    when (customization.currentScenery) {
+        com.example.ui.model.SceneryTheme.PARK -> {
+            drawCircle(Color(0xFFFFD54F), radius = w(18f), center = Offset(x(170f), y(35f)))
+            drawCircle(Color(0xCCFFFFFF), radius = w(14f), center = Offset(x(45f), y(40f)))
+            drawCircle(Color(0xCCFFFFFF), radius = w(11f), center = Offset(x(32f), y(44f)))
+            drawCircle(Color(0xCCFFFFFF), radius = w(12f), center = Offset(x(58f), y(44f)))
+            val hillPath = Path().apply {
+                moveTo(x(0f), y(190f))
+                quadraticTo(x(60f), y(170f), x(130f), y(185f))
+                quadraticTo(x(170f), y(175f), x(200f), y(190f))
+                lineTo(x(200f), y(240f))
+                lineTo(x(0f), y(240f))
+                close()
+            }
+            drawPath(hillPath, color = Color(0xFF81C784))
+        }
+
+        com.example.ui.model.SceneryTheme.SPACE -> {
+            val starColor = Color(0xFFFFEE58)
+            drawCircle(starColor, radius = w(2.5f), center = Offset(x(30f), y(30f)))
+            drawCircle(Color.White, radius = w(2f), center = Offset(x(70f), y(20f)))
+            drawCircle(starColor, radius = w(3f), center = Offset(x(165f), y(35f)))
+            drawCircle(Color.White, radius = w(1.5f), center = Offset(x(140f), y(60f)))
+            drawCircle(Color.White, radius = w(2.5f), center = Offset(x(25f), y(80f)))
+            drawCircle(starColor, radius = w(2f), center = Offset(x(180f), y(90f)))
+            drawCircle(Color(0xFFFFEE58), radius = w(12f), center = Offset(x(160f), y(30f)))
+            drawCircle(bgColor, radius = w(10f), center = Offset(x(156f), y(27f)))
+        }
+
+        com.example.ui.model.SceneryTheme.LIBRARY -> {
+            val shelfColor = Color(0xFF8D6E63)
+            drawRoundRect(shelfColor, topLeft = Offset(x(10f), y(55f)), size = Size(w(180f), h(8f)), cornerRadius = CornerRadius(w(2f), h(2f)))
+            drawRoundRect(shelfColor, topLeft = Offset(x(10f), y(115f)), size = Size(w(180f), h(8f)), cornerRadius = CornerRadius(w(2f), h(2f)))
+            val bookColors = listOf(Color(0xFFE53935), Color(0xFF1E88E5), Color(0xFF43A047), Color(0xFFFB8C00), Color(0xFF8E24AA))
+            for (i in 0..6) {
+                val bColor = bookColors[i % bookColors.size]
+                drawRoundRect(bColor, topLeft = Offset(x(18f + i * 8f), y(32f)), size = Size(w(6f), h(23f)), cornerRadius = CornerRadius(w(1f), h(1f)))
+            }
+            for (i in 0..5) {
+                val bColor = bookColors[(i + 2) % bookColors.size]
+                drawRoundRect(bColor, topLeft = Offset(x(135f + i * 8f), y(34f)), size = Size(w(6f), h(21f)), cornerRadius = CornerRadius(w(1f), h(1f)))
+            }
+        }
+
+        com.example.ui.model.SceneryTheme.CLASSROOM -> {
+            drawRoundRect(Color(0xFF2E7D32), topLeft = Offset(x(15f), y(15f)), size = Size(w(170f), h(95f)), cornerRadius = CornerRadius(w(10f), h(10f)))
+            drawRoundRect(Color(0xFF8D6E63), topLeft = Offset(x(12f), y(12f)), size = Size(w(176f), h(101f)), cornerRadius = CornerRadius(w(12f), h(12f)), style = Stroke(width = w(3.5f)))
+            drawCircle(Color(0xCCFFFFFF), radius = w(2.5f), center = Offset(x(40f), y(35f)))
+            drawCircle(Color(0xCCFFFFFF), radius = w(2f), center = Offset(x(150f), y(40f)))
+        }
+
+        com.example.ui.model.SceneryTheme.CYBER -> {
+            val neonColor = Color(0xFF00E5FF)
+            drawLine(neonColor, start = Offset(x(0f), y(180f)), end = Offset(x(200f), y(180f)), strokeWidth = w(2f))
+            drawLine(neonColor.copy(alpha = 0.5f), start = Offset(x(0f), y(200f)), end = Offset(x(200f), y(200f)), strokeWidth = w(1.5f))
+            drawLine(neonColor.copy(alpha = 0.3f), start = Offset(x(0f), y(220f)), end = Offset(x(200f), y(220f)), strokeWidth = w(1f))
+            drawLine(neonColor.copy(alpha = 0.4f), start = Offset(x(100f), y(180f)), end = Offset(x(40f), y(240f)), strokeWidth = w(1.5f))
+            drawLine(neonColor.copy(alpha = 0.4f), start = Offset(x(100f), y(180f)), end = Offset(x(160f), y(240f)), strokeWidth = w(1.5f))
+        }
+
+        com.example.ui.model.SceneryTheme.SUNSET -> {
+            drawCircle(Color(0xFFFF7043), radius = w(30f), center = Offset(x(100f), y(110f)))
+            drawCircle(Color(0xFFFFCA28), radius = w(24f), center = Offset(x(100f), y(110f)))
+            drawOval(Color(0x55FFA726), topLeft = Offset(x(20f), y(170f)), size = Size(w(160f), h(25f)))
+        }
+
+        com.example.ui.model.SceneryTheme.MINIMAL -> {
+            drawCircle(
+                color = Color(0x15000000),
+                radius = w(65f),
+                center = Offset(x(100f), y(110f))
+            )
+        }
+    }
+}
+

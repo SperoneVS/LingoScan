@@ -186,6 +186,8 @@ class FirestoreRepository(
             "facialHairColorIndex" to avatar.facialHairColorIndex,
             "headwearIndex" to avatar.headwearIndex,
             "headwearColorIndex" to avatar.headwearColorIndex,
+            "backgroundIndex" to avatar.backgroundIndex,
+            "sceneryIndex" to avatar.sceneryIndex,
             "unlockedSuits" to avatar.unlockedSuits.toList(),
             "updatedAt" to FieldValue.serverTimestamp()
         )

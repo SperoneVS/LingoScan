@@ -31,6 +31,8 @@ class UserPreferences(context: Context) {
         private const val KEY_FACIAL_HAIR_COLOR = "avatar_facial_hair_color"
         private const val KEY_HEADWEAR = "avatar_headwear"
         private const val KEY_HEADWEAR_COLOR = "avatar_headwear_color"
+        private const val KEY_BACKGROUND = "avatar_background"
+        private const val KEY_SCENERY = "avatar_scenery"
         private const val KEY_UNLOCKED_SUITS = "avatar_unlocked_suits"
 
         val SUPPORTED_LANGUAGES = listOf(
@@ -92,6 +94,8 @@ class UserPreferences(context: Context) {
             facialHairColorIndex = prefs.getInt(KEY_FACIAL_HAIR_COLOR, 0),
             headwearIndex = prefs.getInt(KEY_HEADWEAR, 0),
             headwearColorIndex = prefs.getInt(KEY_HEADWEAR_COLOR, 0),
+            backgroundIndex = prefs.getInt(KEY_BACKGROUND, 0),
+            sceneryIndex = prefs.getInt(KEY_SCENERY, 0),
             unlockedSuits = unlocked
         )
     }
@@ -110,6 +114,8 @@ class UserPreferences(context: Context) {
             .putInt(KEY_FACIAL_HAIR_COLOR, config.facialHairColorIndex)
             .putInt(KEY_HEADWEAR, config.headwearIndex)
             .putInt(KEY_HEADWEAR_COLOR, config.headwearColorIndex)
+            .putInt(KEY_BACKGROUND, config.backgroundIndex)
+            .putInt(KEY_SCENERY, config.sceneryIndex)
             .putStringSet(KEY_UNLOCKED_SUITS, config.unlockedSuits)
             .apply()
     }

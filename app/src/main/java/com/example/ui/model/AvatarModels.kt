@@ -30,7 +30,22 @@ enum class AvatarCategory(val title: String, val iconResName: String) {
     HAIRSTYLE("Frisur", "hair"),
     GLASSES("Brille", "glasses"),
     FACIAL_HAIR("Bart", "beard"),
-    HEADWEAR("Kopfbedeckung", "hat")
+    HEADWEAR("Kopfbedeckung", "hat"),
+    BACKGROUND("Hintergrund", "background")
+}
+
+enum class SceneryTheme(
+    val title: String,
+    val iconEmoji: String,
+    val description: String
+) {
+    MINIMAL("Studio", "🎨", "Schlichter Studio-Hintergrund"),
+    PARK("Sonnige Wiese", "🌻", "Sanfte grüne Hügel und Wolken"),
+    SPACE("Sternenhimmel", "✨", "Kosmische Nacht mit leuchtenden Sternen"),
+    LIBRARY("Bibliothek", "📚", "Warme Bücherregale zum Lesen"),
+    CLASSROOM("Sprach-Klasse", "🎓", "Klassenzimmer mit Lerntafel"),
+    CYBER("Neon Cyber", "⚡", "Futuristische Cyberpunk-Strahlen"),
+    SUNSET("Sonnenuntergang", "🌅", "Goldener warmer Farbverlauf")
 }
 
 data class AvatarCustomization(
@@ -46,10 +61,12 @@ data class AvatarCustomization(
     val facialHairColorIndex: Int = 1,
     val headwearIndex: Int = 0,
     val headwearColorIndex: Int = 0,
+    val backgroundIndex: Int = 0, // Selectable background color
+    val sceneryIndex: Int = 0, // Selectable scenery theme
     val unlockedSuits: Set<String> = setOf("none", "keys")
 ) {
-    // Skin Tone Colors palette (matching screenshot #7)
     companion object {
+        // Skin Tone Colors palette (matching screenshot #7)
         val SKIN_COLORS = listOf(
             Color(0xFFFFD1A4), // Light peach
             Color(0xFFF9C18F), // Peach
@@ -102,6 +119,34 @@ data class AvatarCustomization(
             Color(0xFF263238), // Charcoal
             Color(0xFFEC407A)  // Bubblegum pink
         )
+
+        // 24 Background Colors matching Duolingo's palette in Screenshot 1!
+        val BACKGROUND_COLORS = listOf(
+            Color(0xFFFFF9DB), // 0: Buttercup Yellow (Iconic Duolingo stage!)
+            Color(0xFFFFFFFF), // 1: Pure White
+            Color(0xFFECEFF1), // 2: Soft Grey
+            Color(0xFF37474F), // 3: Charcoal Dark
+            Color(0xFFEDE7F6), // 4: Pale Lilac
+            Color(0xFFD1C4E9), // 5: Soft Violet
+            Color(0xFF9575CD), // 6: Deep Purple
+            Color(0xFFB3E5FC), // 7: Ice Blue
+            Color(0xFF4FC3F7), // 8: Sky Blue
+            Color(0xFF1E88E5), // 9: Royal Blue
+            Color(0xFFE0F2F1), // 10: Mint Glow
+            Color(0xFF4DB6AC), // 11: Aqua Teal
+            Color(0xFF00897B), // 12: Emerald Green
+            Color(0xFFDCEDC8), // 13: Pale Lime
+            Color(0xFF9CCC65), // 14: Fresh Meadow
+            Color(0xFF7CB342), // 15: Apple Green
+            Color(0xFFFFE082), // 16: Sunny Amber
+            Color(0xFFFFB74D), // 17: Warm Tangerine
+            Color(0xFFFF8A65), // 18: Sunset Coral
+            Color(0xFFFFCDD2), // 19: Soft Peach
+            Color(0xFFF48FB1), // 20: Bubblegum Pink
+            Color(0xFFEC407A), // 21: Vibrant Magenta
+            Color(0xFF80DEEA), // 22: Electric Cyan
+            Color(0xFF5C6BC0)  // 23: Indigo Dusk
+        )
     }
 
     val currentSkinColor: Color
@@ -115,4 +160,10 @@ data class AvatarCustomization(
 
     val currentHeadwearColor: Color
         get() = HEADWEAR_COLORS.getOrElse(headwearColorIndex) { HEADWEAR_COLORS[0] }
+
+    val currentBackgroundColor: Color
+        get() = BACKGROUND_COLORS.getOrElse(backgroundIndex) { BACKGROUND_COLORS[0] }
+
+    val currentScenery: SceneryTheme
+        get() = SceneryTheme.entries.getOrElse(sceneryIndex) { SceneryTheme.MINIMAL }
 }
